@@ -4,6 +4,12 @@ task refnaap {
   input {
     File read1
     String samplename
+    String model = "r10_min_high_g303"
+    Int size = 50
+    Int trim_right = 25
+    Int trim_left = 25
+    Int min_coverage = 5
+
     String docker = "us-docker.pkg.dev/general-theiagen/internal/refnaap:b3ad097"
     Int cpu = 4
     Int memory = 8
@@ -22,7 +28,7 @@ task refnaap {
     wgsid=$(basename ~{read1} .fastq.gz)
 
     # Run the pipeline
-    if RefNAAP_CLI.py -i $PWD/reads -o $PWD/refnaap
+    if RefNAAP_CLI.py -i $PWD/reads -o $PWD/refnaap --threads ~{cpu} --MinCov ~{min_coverage} --model ~{model} --Size ~{size} --Right ~{trim_right} --Left ~{trim_left}
     then
         # output files - move to root directory
         if [[ -f "refnaap/${wgsid}_final_scaffold.fasta" ]]; then
