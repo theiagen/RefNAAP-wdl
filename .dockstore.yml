@@ -1,0 +1,7 @@
+version: 1.2
+workflows:
+ - name: RefNAAP-wdl
+   subclass: WDL
+   primaryDescriptorPath: /workflows/wf_refnaap.wdl
+   testParameterFiles:
+    - /test/inputs/empty.json
