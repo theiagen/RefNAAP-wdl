@@ -15,11 +15,14 @@ task refnaap {
     mkdir -p reads
     cp ~{read1} reads/
 
+    # create outdir
+    mkdir -p refnaap
+
     # get the read name from file without extension
     wgsid=$(basename ~{read1} .fastq.gz)
 
     # Run the pipeline
-    if RefNAAP_CLI.py -i $PWD/fastq -o $PWD/refnaap
+    if RefNAAP_CLI.py -i $PWD/reads -o $PWD/refnaap
     then
         # output files - move to root directory
         if [[ -f "refnaap/${wgsid}_final_scaffold.fasta" ]]; then
@@ -36,8 +39,8 @@ task refnaap {
   output {
     String refnaap_docker = docker
     String refnaap_analysis_date = read_string("DATE")
-    File assembly_fasta = "~{samplename}.fasta"
-    File multiqc_report = "~{samplename}.multiqc_report.html"
+    File refnaap_assembly_fasta = "~{samplename}.fasta"
+    File refnaap_multiqc_report = "~{samplename}.multiqc_report.html"
   }
   runtime {
     docker: "~{docker}"
