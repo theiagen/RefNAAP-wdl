@@ -13,6 +13,7 @@ task refnaap {
     String docker = "us-docker.pkg.dev/general-theiagen/internal/refnaap:b3ad097"
     Int cpu = 4
     Int memory = 8
+    Int disk_size = 100
   }
   command <<<
     date | tee DATE
@@ -52,7 +53,7 @@ task refnaap {
     docker: "~{docker}"
     memory: "~{memory} GB"
     cpu: cpu
-    disks: "local-disk 100 SSD"
+    disks: "local-disk ~{disk_size} SSD"
     maxRetries: 0
     preemptible: 0
   }
