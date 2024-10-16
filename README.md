@@ -66,7 +66,7 @@ Several inputs are available for workflow costumization: _required inputs_ that 
 Table 1: Input description for RefNAAP-wdl
 | **Terra Task Name** | **Variable** | **Type** | **Description** | **Default Value** | **Terra Status** |
 |---|---|---|---|---|---|
-| refnaap_wf | **read1** | Base-called ONT read file in FASTQ file format (compressed) | DESCRIPTION | | Required |
+| refnaap_wf | **read1** | File | Base-called ONT read file in FASTQ file format (compressed) | | Required |
 | refnaap_wf | **samplename** | String | Name of sample to be analyzed | | Required |
 | refnaap | **cpu** | Int | Number of CPUs to allocate to the task | 4 | Optional |
 | refnaap | **disk_size** | Int | Amount of storage (in GB) to allocate to the task | 100 | Optional |
