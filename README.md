@@ -93,6 +93,7 @@ The `RefNAAP-wdl` produces four outputs that are populated back to the data tabl
 ></p>
 > Figure 5: RefNAAP-wdl outputs.
 
+Table 2: Output description for RefNAAP-wdl
 | **Variable** | **Type** | **Description** |
 |---|---|---|
 | **refnaap_analysis_date** | String | Date of analysis with RefNAAP. |
