@@ -11,8 +11,8 @@ task refnaap {
     Int min_coverage = 5
 
     String docker = "us-docker.pkg.dev/general-theiagen/internal/refnaap:b3ad097"
-    Int cpu = 4
-    Int memory = 8
+    Int cpu = 8
+    Int memory = 16
     Int disk_size = 100
   }
   command <<<
@@ -26,7 +26,9 @@ task refnaap {
     mkdir -p refnaap
 
     # get the read name from file without extension
-    wgsid=$(basename ~{read1} .fastq.gz)
+    PATTERN="\.f(q|astq)(\.gz)?$" # match .fastq or .fastq.gz
+    wgsid=$(basename ~{read1} | sed -E "s/$PATTERN//")
+    >&2 echo "DEBUG: wgsid: $wgsid"
 
     # Run the pipeline
     if RefNAAP_CLI.py -i $PWD/reads -o $PWD/refnaap --threads ~{cpu} --MinCov ~{min_coverage} --model ~{model} --Size ~{size} --Right ~{trim_right} --Left ~{trim_left}
