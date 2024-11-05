@@ -16,6 +16,9 @@ task refnaap {
     Int disk_size = 100
   }
   command <<<
+    #set -euo pipefail to avoid silent failure
+    set -euo pipefail
+    
     date | tee DATE
 
     # Move reads to expected directory

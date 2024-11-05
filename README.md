@@ -68,10 +68,10 @@ Table 1: Input description for RefNAAP-wdl
 |---|---|---|---|---|---|
 | refnaap_wf | **read1** | File | Base-called ONT read file in FASTQ file format (compressed) | | Required |
 | refnaap_wf | **samplename** | String | Name of sample to be analyzed | | Required |
-| refnaap | **cpu** | Int | Number of CPUs to allocate to the task | 4 | Optional |
+| refnaap | **cpu** | Int | Number of CPUs to allocate to the task | 8 | Optional |
 | refnaap | **disk_size** | Int | Amount of storage (in GB) to allocate to the task | 100 | Optional |
 | refnaap | **docker** | String | The Docker container to use for the task | "us-docker.pkg.dev/general-theiagen/internal/refnaap:b3ad097" | Optional |
-| refnaap | **memory** | Int | Amount of memory/RAM (in GB) to allocate to the task | 8 | Optional |
+| refnaap | **memory** | Int | Amount of memory/RAM (in GB) to allocate to the task | 16 | Optional |
 | refnaap | **min_coverage** | Int |  Amplicon regions need a minimum of this average coverage number | 5 | Optional |
 | refnaap | **model** | String | Basecall model | "r10_min_high_g303" | Optional |
 | refnaap | **size** | Int | Filter reads less than this length | 50 | Optional |
