@@ -10,7 +10,7 @@ task refnaap {
     Int trim_left = 25
     Int min_coverage = 5
 
-    String docker = "us-docker.pkg.dev/general-theiagen/internal/refnaap:b3ad097"
+    String docker = "us-docker.pkg.dev/general-theiagen/internal/refnaap:b3ad097-fastqc-0.12.1"
     Int cpu = 8
     Int memory = 16
     Int disk_size = 100
