@@ -51,7 +51,7 @@ RUN mamba env create -f RefNAAP/environment.yml && \
 # set locale settings to UTF-8
 # set the environment, put new conda env in PATH by default
 ENV PATH="/opt/conda/bin:${PATH}" \
-  LC_ALL=C.UTF-8nt
+  LC_ALL=C.UTF-8
 ENV PATH="/opt/conda/envs/refnaap/bin:${PATH}"
 
 # add RefNAAP to PATH
