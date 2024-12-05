@@ -40,6 +40,9 @@ RUN wget --quiet "${REFNAAP_SRC_URL}" && \
  rm ${REFNAAP_COMMIT}.zip && \
  mv -v RefNAAP-${REFNAAP_COMMIT} RefNAAP
 
+# update environment.yml to include the latest fastQC version
+RUN sed -i 's/fastqc=0.11.9/fastqc=0.12.1/g' RefNAAP/environment.yml
+
 # install environment.yml from RefNAAP repo
 RUN mamba env create -f RefNAAP/environment.yml && \
   mamba clean --all -y
