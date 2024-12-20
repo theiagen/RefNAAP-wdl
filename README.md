@@ -74,7 +74,9 @@ Table 1: Input description for RefNAAP-wdl
 | refnaap | **memory** | Int | Amount of memory/RAM (in GB) to allocate to the task | 16 | Optional |
 | refnaap | **min_coverage** | Int |  Amplicon regions need a minimum of this average coverage number | 5 | Optional |
 | refnaap | **model** | String | Basecall model | "r10_min_high_g303" | Optional |
+| refnaap | **reference_file** | File | Reference fasta file to be used for consensus calling. Can be multifasta. | [Americas2.fasta](https://github.com/jiangweiyao/RefNAAP/blob/main/Americas2.fasta) | Optional |
 | refnaap | **size** | Int | Filter reads less than this length | 50 | Optional |
+| refnaap | **top_n_genomes** | Int | Top n genomes with the most depth used for consensus creation.  | 1 | Optional |
 | refnaap | **trim_left** | Int | Bases to trim from left side of read | 25 | Optional |
 | refnaap | **trim_right** | Int | Bases to trim from right side of read | 25 | Optional |
 
