@@ -13,7 +13,7 @@ task rabv_genotype {
         #set -euo pipefail to avoid silent failure
         set -euo pipefail
 
-        rabv-analyze.sh genotype ~{assembly_fasta} rabies_genotype.txt
+        rabv-analyze.sh ~{assembly_fasta} rabies_genotype.txt
     >>>
 
     output {
