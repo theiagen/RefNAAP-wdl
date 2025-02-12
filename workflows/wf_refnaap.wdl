@@ -25,6 +25,8 @@ workflow refnaap_wf {
     String refnaap_analysis_date = refnaap.refnaap_analysis_date
     File refnaap_assembly_fasta = refnaap.refnaap_assembly_fasta
     File refnaap_multiqc_report = refnaap.refnaap_multiqc_report
-    File rabv_genotype_results = rabv_genotype.genotype_results
+    String rabvglue_major_clade = rabv_genotype.major_clade
+    String rabvglue_minor_clade = rabv_genotype.minor_clade
+    String rabvglue_query_name = rabv_genotype.query_name
   }
 }
