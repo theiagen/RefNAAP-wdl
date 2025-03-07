@@ -59,11 +59,12 @@ task ncbi_datasets_blast {
 
     # Do comparison to threshold for RABV identification
     TOP_IDENTITY=$(head -n 1 blast_results.txt | cut -f 3)
-    # Multiply by 100 and convert to integer and preserve 2 decimals
-    TOP_IDENTITY_INT=$(printf "%.0f" $(echo "$TOP_IDENTITY * 100" | tr -d '.'))
-    THRESHOLD_INT=$(printf "%.0f" $(echo "~{min_identity_threshold} * 100" | tr -d '.'))
-    # If the top hit identity is greater than the threshold, we can say it's RABV
-    if [ "$TOP_IDENTITY_INT" -ge "$THRESHOLD_INT" ]; then
+    # BASH Integer math, so we need to scale up by 1000
+    TOP_IDENTITY_SCALED=$(echo "$TOP_IDENTITY * 1000" | sed 's/\..*//')
+    THRESHOLD_SCALED=$(echo "~{min_identity_threshold} * 1000" | sed 's/\..*//')
+    
+    # Do the comparison
+    if [ "$TOP_IDENTITY_SCALED" -ge "$THRESHOLD_SCALED" ]; then
         echo "Yes" > RABV_IDENTIFICATION
     else
         echo "No" > RABV_IDENTIFICATION
