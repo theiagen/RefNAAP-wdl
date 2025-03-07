@@ -40,5 +40,6 @@ workflow refnaap_wf {
     File ncbi_datasets_report = ncbi_datasets_blast.ncbi_datasets_report
     File blast_results = ncbi_datasets_blast.blast_results
     File blast_summary = ncbi_datasets_blast.blast_summary
+    String rabv_identified = ncbi_datasets_blast.rabv_identification
   }
 }
