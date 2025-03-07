@@ -23,6 +23,7 @@ workflow refnaap_wf {
   }
   call ncbi_datasets_blast.ncbi_datasets_blast {
     input: 
+      refnaap_assembly=refnaap.refnaap_assembly_fasta,
       accession=rabv_genotype.query_name
   }
   output {
@@ -37,5 +38,7 @@ workflow refnaap_wf {
     String ncbi_datasets_version = ncbi_datasets_blast.ncbi_datasets_version
     File ncbi_datasets_reference_fasta = ncbi_datasets_blast.ncbi_datasets_reference_fasta
     File ncbi_datasets_report = ncbi_datasets_blast.ncbi_datasets_report
+    File blast_results = ncbi_datasets_blast.blast_results
+    File blast_summary = ncbi_datasets_blast.blast_summary
   }
 }
