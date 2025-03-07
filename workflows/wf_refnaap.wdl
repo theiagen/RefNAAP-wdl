@@ -2,6 +2,7 @@ version 1.0
 
 import "../tasks/task_refnaap.wdl" as refnaap_task
 import "../tasks/task_rabvglue.wdl" as rabvglue_task
+import "../tasks/task_ncbi_dataset_blast.wdl" as ncbi_datasets_blast
 
 workflow refnaap_wf {
   meta {
@@ -20,6 +21,10 @@ workflow refnaap_wf {
     input: 
       assembly_fasta=refnaap.refnaap_assembly_fasta
   }
+  call ncbi_datasets_blast.ncbi_datasets_blast {
+    input: 
+      accession=rabv_genotype.query_name
+  }
   output {
     String refnaap_docker = refnaap.refnaap_docker
     String refnaap_analysis_date = refnaap.refnaap_analysis_date
@@ -28,5 +33,9 @@ workflow refnaap_wf {
     String rabvglue_major_clade = rabv_genotype.major_clade
     String rabvglue_minor_clade = rabv_genotype.minor_clade
     String rabvglue_query_name = rabv_genotype.query_name
+    String ncbi_datasets_docker = ncbi_datasets_blast.ncbi_datasets_docker
+    String ncbi_datasets_version = ncbi_datasets_blast.ncbi_datasets_version
+    File ncbi_datasets_reference_fasta = ncbi_datasets_blast.ncbi_datasets_reference_fasta
+    File ncbi_datasets_report = ncbi_datasets_blast.ncbi_datasets_report
   }
 }
