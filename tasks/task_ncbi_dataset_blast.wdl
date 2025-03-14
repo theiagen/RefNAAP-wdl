@@ -29,14 +29,14 @@ task ncbi_datasets_blast {
     datasets download virus genome accession \
     ~{ncbi_accession} \
     --filename ~{ncbi_accession}.zip \
-    --include genome 
+    --include cds
 
     unzip ~{ncbi_accession}.zip
-    cp -v ncbi_dataset/data/genomic.fna ./~{ncbi_accession}.fasta
+    cp -v ncbi_dataset/data/cds.fna ./~{ncbi_accession}_cds.fasta
     cp -v ncbi_dataset/data/data_report.jsonl ./~{ncbi_accession}.data_report.jsonl
 
     # Make blast database from the downloaded virus genome
-    makeblastdb -in ~{ncbi_accession}.fasta -dbtype nucl -out virus_db
+    makeblastdb -in ~{ncbi_accession}_cds.fasta -dbtype nucl -out virus_db
 
     # Run blast comparing refnaap assembly against the virus genome
     blastn -query ~{refnaap_assembly} \
@@ -72,7 +72,7 @@ task ncbi_datasets_blast {
   >>>
   
   output {
-    File ncbi_datasets_reference_fasta = "~{ncbi_accession}.fasta"
+    File ncbi_datasets_reference_fasta = "~{ncbi_accession}_cds.fasta"
     File ncbi_datasets_report = "~{ncbi_accession}.data_report.jsonl"
     String ncbi_datasets_version = read_string("DATASETS_VERSION")
     File blast_results = "blast_results.tsv"
