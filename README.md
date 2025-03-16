@@ -6,8 +6,8 @@ WDL wrapper around [RefNAAP](https://github.com/jiangweiyao/RefNAAP) for executi
 
 [RefNAAP](https://github.com/jiangweiyao/RefNAAP) is a reference based Oxford Nanopore Technologies (ONT) assembly analysis pipeline for RABV genomes. In summary, it performs the following steps:
 
-1. t QCs the files using [fastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and [multiQC](https://multiqc.info/) to generate a quality report.
-2. It trims the left and right ends of the reads by 25 basepairs, and filters out reads shorter than 50bp. These values can be costumized.
+1. It QCs the files using [fastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and [multiQC](https://multiqc.info/) to generate a quality report.
+2. It trims the left and right ends of the reads by 25 basepairs, and filters out reads shorter than 50bp. These values can be customized.
 3. It generates the assembly reads using reference-based assembly with [minimap2](https://github.com/lh3/minimap2), gap fixing, and [medaka](https://github.com/nanoporetech/medaka).
 
 It uses [a reference file composed of 14 different RABV sequences](https://github.com/jiangweiyao/RefNAAP/blob/main/Americas2.fasta) for the reference-based assembly.
