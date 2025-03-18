@@ -34,10 +34,10 @@ workflow refnaap_wf {
     String rabvglue_major_clade = rabv_genotype.major_clade
     String rabvglue_minor_clade = rabv_genotype.minor_clade
     String rabvglue_query_name = rabv_genotype.query_name
-    String ncbi_datasets_docker = ncbi_datasets_blast.ncbi_datasets_docker
-    String ncbi_datasets_version = ncbi_datasets_blast.ncbi_datasets_version
-    File ncbi_datasets_reference_fasta = ncbi_datasets_blast.ncbi_datasets_reference_fasta
-    File ncbi_datasets_report = ncbi_datasets_blast.ncbi_datasets_report
+    String datasets_ncbi_docker = ncbi_datasets_blast.ncbi_datasets_docker
+    String datasets_ncbi_version = ncbi_datasets_blast.ncbi_datasets_version
+    File datasets_ncbi_reference_fasta = ncbi_datasets_blast.ncbi_datasets_reference_fasta
+    File datasets_ncbi_report = ncbi_datasets_blast.ncbi_datasets_report
     File blast_results = ncbi_datasets_blast.blast_results
     String rabv_identified = ncbi_datasets_blast.rabv_identification
     Float N = ncbi_datasets_blast.n_gene_coverage
