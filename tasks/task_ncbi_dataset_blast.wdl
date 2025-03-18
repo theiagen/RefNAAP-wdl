@@ -6,37 +6,36 @@ task ncbi_datasets_blast {
     File refnaap_assembly
     Int cpu = 4
     Int memory = 8
-    String docker = "us-docker.pkg.dev/general-theiagen/theiagen/ncbi-datasets-blast:16.38.1"
+    String docker = "us-docker.pkg.dev/general-theiagen/theiagen/ncbi-datasets-blast:16.38.1_V2"
     Int disk_size = 50
     String blast_evalue = "1e-10"
     Float min_identity_threshold = 75.0
   }
   meta {
-    # added so that call caching is always turned off 
     volatile: true
   }
-  
-  # Clean up accesion from RaBVGlue output
-  String ncbi_accession = sub(accession, "_.*$", "")
   
   command <<<
     date | tee DATE
     datasets --version | sed 's|datasets version: ||' | tee DATASETS_VERSION
 
-    echo "Downloading the virus genome accession: ~{ncbi_accession}"
+    echo "Downloading the virus genome accession: ~{accession}"
 
     # For refnaap / rabvglue we only want to do the virus download
     datasets download virus genome accession \
-    ~{ncbi_accession} \
-    --filename ~{ncbi_accession}.zip \
+    ~{accession} \
+    --filename ~{accession}.zip \
     --include cds
 
-    unzip ~{ncbi_accession}.zip
-    cp -v ncbi_dataset/data/cds.fna ./~{ncbi_accession}_cds.fasta
-    cp -v ncbi_dataset/data/data_report.jsonl ./~{ncbi_accession}.data_report.jsonl
+    unzip ~{accession}.zip
+    cp -v ncbi_dataset/data/cds.fna ./~{accession}_cds.fasta
+    cp -v ncbi_dataset/data/data_report.jsonl ./~{accession}.data_report.jsonl
+
+    # Make intermitent files for blast headers for down stream analysis
+    grep ">" ~{accession}_cds.fasta > rabv_cds_headers.txt
 
     # Make blast database from the downloaded virus genome
-    makeblastdb -in ~{ncbi_accession}_cds.fasta -dbtype nucl -out virus_db
+    makeblastdb -in ~{accession}_cds.fasta -dbtype nucl -out virus_db
 
     # Run blast comparing refnaap assembly against the virus genome
     blastn -query ~{refnaap_assembly} \
@@ -50,35 +49,37 @@ task ncbi_datasets_blast {
     echo -e "query_id\tsubject_id\tpercent_identity\talignment_length\tmismatches\tgap_opens\tquery_start\tquery_end\tsubject_start\tsubject_end\tevalue\tbit_score\tquery_coverage" > blast_results.tsv
     cat blast_results.txt >> blast_results.tsv
     
-    # For now let's just print out some summary statistics, but later we can scrape this
-    echo "=== BLAST Summary Statistics ===" > blast_summary.txt
-    echo "Top hit percent identity: $(head -n 1 blast_results.txt | cut -f 3)" >> blast_summary.txt
-    echo "Top hit alignment length: $(head -n 1 blast_results.txt | cut -f 4)" >> blast_summary.txt
-    echo "Top hit e-value: $(head -n 1 blast_results.txt | cut -f 11)" >> blast_summary.txt
-    echo "Total hits: $(wc -l < blast_results.txt)" >> blast_summary.txt
+    python3 /scripts/identify-genes.py ~{min_identity_threshold} blast_results.tsv rabv_cds_headers.txt
 
-    # Do comparison to threshold for RABV identification
-    TOP_IDENTITY=$(head -n 1 blast_results.txt | cut -f 3)
-    # BASH Integer math, so we need to scale up by 1000
-    TOP_IDENTITY_SCALED=$(echo "$TOP_IDENTITY * 1000" | sed 's/\..*//')
-    THRESHOLD_SCALED=$(echo "~{min_identity_threshold} * 1000" | sed 's/\..*//')
-    
-    # Do the comparison
-    if [ "$TOP_IDENTITY_SCALED" -ge "$THRESHOLD_SCALED" ]; then
-        echo "Yes" > RABV_IDENTIFICATION
-    else
-        echo "No" > RABV_IDENTIFICATION
+    # If gene_coverage.txt doesn't exist (no hits above threshold), create it with zeros
+    if [ ! -f gene_coverage.txt ]; then
+      echo "N: 0.00" > gene_coverage.txt
+      echo "P: 0.00" >> gene_coverage.txt
+      echo "M: 0.00" >> gene_coverage.txt
+      echo "G: 0.00" >> gene_coverage.txt
+      echo "L: 0.00" >> gene_coverage.txt
     fi
+    
+    # Extract each gene's coverage value as float
+    grep "^N:" gene_coverage.txt | cut -d' ' -f2 | sed 's/%//' > n_gene_coverage.txt
+    grep "^P:" gene_coverage.txt | cut -d' ' -f2 | sed 's/%//' > p_gene_coverage.txt
+    grep "^M:" gene_coverage.txt | cut -d' ' -f2 | sed 's/%//' > m_gene_coverage.txt
+    grep "^G:" gene_coverage.txt | cut -d' ' -f2 | sed 's/%//' > g_gene_coverage.txt
+    grep "^L:" gene_coverage.txt | cut -d' ' -f2 | sed 's/%//' > l_gene_coverage.txt
   >>>
   
   output {
-    File ncbi_datasets_reference_fasta = "~{ncbi_accession}_cds.fasta"
-    File ncbi_datasets_report = "~{ncbi_accession}.data_report.jsonl"
+    File ncbi_datasets_reference_fasta = "~{accession}_cds.fasta"
+    File ncbi_datasets_report = "~{accession}.data_report.jsonl"
     String ncbi_datasets_version = read_string("DATASETS_VERSION")
     File blast_results = "blast_results.tsv"
-    File blast_summary = "blast_summary.txt"
-    String rabv_identification = read_string("RABV_IDENTIFICATION")
+    String rabv_identification = read_string("rabv_identification.txt")
     String ncbi_datasets_docker = docker
+    Float n_gene_coverage = read_string("n_gene_coverage.txt")
+    Float p_gene_coverage = read_string("p_gene_coverage.txt")
+    Float m_gene_coverage = read_string("m_gene_coverage.txt")
+    Float g_gene_coverage = read_string("g_gene_coverage.txt")
+    Float l_gene_coverage = read_string("l_gene_coverage.txt")
   }
   
   runtime {

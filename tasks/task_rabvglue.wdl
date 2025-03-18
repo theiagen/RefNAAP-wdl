@@ -34,7 +34,7 @@ task rabv_genotype {
     >>>
 
     output {
-        String query_name = read_string("query_name.txt")
+        String query_name = sub(read_string("query_name.txt"), "_.*$", "")
         String major_clade = read_string("major_clade.txt")
         String minor_clade = read_string("minor_clade.txt")
     }

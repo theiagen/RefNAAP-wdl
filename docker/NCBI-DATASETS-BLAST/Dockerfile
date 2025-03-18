@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
 RUN datasets --version && \
     blastn -version
 
+RUN mkdir -p /scripts
+
+COPY identify-genes.py /scripts/identify-genes.py
+
 # Set working directory
 WORKDIR /data
 

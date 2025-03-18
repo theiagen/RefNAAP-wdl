@@ -39,7 +39,11 @@ workflow refnaap_wf {
     File ncbi_datasets_reference_fasta = ncbi_datasets_blast.ncbi_datasets_reference_fasta
     File ncbi_datasets_report = ncbi_datasets_blast.ncbi_datasets_report
     File blast_results = ncbi_datasets_blast.blast_results
-    File blast_summary = ncbi_datasets_blast.blast_summary
     String rabv_identified = ncbi_datasets_blast.rabv_identification
+    Float N = ncbi_datasets_blast.n_gene_coverage
+    Float P = ncbi_datasets_blast.p_gene_coverage
+    Float M = ncbi_datasets_blast.m_gene_coverage
+    Float G = ncbi_datasets_blast.g_gene_coverage
+    Float L = ncbi_datasets_blast.l_gene_coverage
   }
 }
