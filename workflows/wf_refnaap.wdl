@@ -40,10 +40,10 @@ workflow refnaap_wf {
     File datasets_ncbi_report = ncbi_datasets_blast.ncbi_datasets_report
     File blast_results = ncbi_datasets_blast.blast_results
     String rabv_identified = ncbi_datasets_blast.rabv_identification
-    Float N = ncbi_datasets_blast.n_gene_coverage
-    Float P = ncbi_datasets_blast.p_gene_coverage
-    Float M = ncbi_datasets_blast.m_gene_coverage
-    Float G = ncbi_datasets_blast.g_gene_coverage
-    Float L = ncbi_datasets_blast.l_gene_coverage
+    Float N_percent_coverage = ncbi_datasets_blast.n_gene_coverage
+    Float P_percent_coverage = ncbi_datasets_blast.p_gene_coverage
+    Float M_percent_coverage = ncbi_datasets_blast.m_gene_coverage
+    Float G_percent_coverage = ncbi_datasets_blast.g_gene_coverage
+    Float L_percent_coverage = ncbi_datasets_blast.l_gene_coverage
   }
 }
