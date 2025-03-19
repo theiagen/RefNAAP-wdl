@@ -21,15 +21,19 @@ def parse_glue_output(xml_file):
         tree = ET.parse(xml_file)
         root = tree.getroot()
         
-        query_results = root.find('queryGenotypingResults')
+        # Changed to findall since there could be multiple queryGenotypingResults
+        query_results_list = root.findall('queryGenotypingResults')
         
         best_ref = None
         major_clade = None
         minor_clade = None
         
-        if query_results is None:
+        if not query_results_list:
             print("Error: Could not find queryGenotypingResults in XML")
             return best_ref, major_clade, minor_clade
+        
+        # Use the first queryGenotypingResults for now
+        query_results = query_results_list[0]
         
         for clade_category in query_results.findall('queryCladeCategoryResult'):
             category_name_elem = clade_category.find('categoryName')
@@ -39,20 +43,28 @@ def parse_glue_output(xml_file):
                 
             category_name = category_name_elem.text
             
+            # For both major and minor clade categories, look for reference IDs
+            # Try to get closestTargetSequenceID first
+            closest_target_elem = clade_category.find('closestTargetSequenceID')
+            closest_member_elem = clade_category.find('closestMemberSequenceID')
+            
+            # If we found a valid target sequence ID, use it
+            if closest_target_elem is not None and closest_target_elem.text not in [None, "null"]:
+                best_ref = closest_target_elem.text
+            # Otherwise, try to use the member sequence ID as fallback
+            elif best_ref is None and closest_member_elem is not None and closest_member_elem.text not in [None, "null"]:
+                best_ref = closest_member_elem.text
+            
+            # Now get the clade information
             if category_name == 'major_clade':
                 major_clade_elem = clade_category.find('finalCladeRenderedName')
-                if major_clade_elem is not None:
+                if major_clade_elem is not None and major_clade_elem.text is not None:
                     major_clade = major_clade_elem.text
             
             elif category_name == 'minor_clade':
                 minor_clade_elem = clade_category.find('finalCladeRenderedName')
-                closest_target_elem = clade_category.find('closestTargetSequenceID')
-                
-                if minor_clade_elem is not None:
+                if minor_clade_elem is not None and minor_clade_elem.text not in [None, "null"]:
                     minor_clade = minor_clade_elem.text
-                
-                if closest_target_elem is not None:
-                    best_ref = closest_target_elem.text
         
         return best_ref, major_clade, minor_clade
         

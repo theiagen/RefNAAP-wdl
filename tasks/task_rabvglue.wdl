@@ -3,7 +3,7 @@ version 1.0
 task rabv_genotype {
     input {
         File assembly_fasta
-        String docker = "us-docker.pkg.dev/general-theiagen/theiagen/rabvglue:1.1.113_20250319"
+        String docker = "us-docker.pkg.dev/general-theiagen/theiagen/rabvglue:1.1.113_20250320"
         Int cpu = 4
         Int memory = 8
         Int disk_size = 50
