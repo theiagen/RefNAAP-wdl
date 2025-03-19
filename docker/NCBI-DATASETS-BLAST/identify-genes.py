@@ -98,7 +98,7 @@ def main():
             if subject_id in subject_to_gene:
                 gene_name = subject_to_gene[subject_id]
                 
-                # Only consider hits that meet the threshold
+                # Only consider hits that meet the threshold - might want to remove this
                 if percent_identity >= min_identity_threshold:
                     # If we haven't seen this gene yet or this is a better hit, update
                     if gene_name not in gene_coverage or query_coverage > gene_coverage[gene_name]:

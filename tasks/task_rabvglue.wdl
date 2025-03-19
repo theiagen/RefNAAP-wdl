@@ -28,6 +28,8 @@ task rabv_genotype {
             minor_clade="No minor clade found"
         fi
 
+        echo "Found query name: $query_name"
+        
         echo "$query_name" > query_name.txt
         echo "$major_clade" > major_clade.txt
         echo "$minor_clade" > minor_clade.txt
