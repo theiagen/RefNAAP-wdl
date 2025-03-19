@@ -104,8 +104,10 @@ ENV LANG=C.UTF-8
 COPY glue-config.xml /opt/gluetools/conf/gluetools-config.xml
 
 # Copy utility script for user to run
-COPY rabv-analyze.sh /opt/gluetools/bin/rabv-analyze.sh
-RUN chmod +x /opt/gluetools/bin/rabv-analyze.sh
+COPY parse_glue_xml.py /opt/gluetools/bin/parse_glue_xml.py
+RUN chmod +x /opt/gluetools/bin/parse_glue_xml.py
+COPY rabv-genotype-reference.sh /opt/gluetools/bin/rabv-genotype-reference.sh
+RUN chmod +x /opt/gluetools/bin/rabv-genotype-reference.sh
 
 # Set working directory
 WORKDIR /opt/gluetools/projects

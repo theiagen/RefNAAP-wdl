@@ -18,6 +18,6 @@ workflow rabvglue_wf {
   output {
     String rabvglue_major_clade = rabv_genotype.major_clade
     String rabvglue_minor_clade = rabv_genotype.minor_clade
-    String rabvglue_query_name = rabv_genotype.query_name
+    String rabvglue_closest_reference = rabv_genotype.closest_reference
   }
 }

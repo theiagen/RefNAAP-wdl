@@ -24,7 +24,7 @@ workflow refnaap_wf {
   call ncbi_datasets_blast.ncbi_datasets_blast {
     input: 
       refnaap_assembly=refnaap.refnaap_assembly_fasta,
-      accession=rabv_genotype.query_name
+      accession=rabv_genotype.closest_reference
   }
   output {
     String refnaap_docker = refnaap.refnaap_docker
@@ -33,7 +33,7 @@ workflow refnaap_wf {
     File refnaap_multiqc_report = refnaap.refnaap_multiqc_report
     String rabvglue_major_clade = rabv_genotype.major_clade
     String rabvglue_minor_clade = rabv_genotype.minor_clade
-    String rabvglue_query_name = rabv_genotype.query_name
+    String rabvglue_closest_reference = rabv_genotype.closest_reference
     String datasets_ncbi_docker = ncbi_datasets_blast.ncbi_datasets_docker
     String datasets_ncbi_version = ncbi_datasets_blast.ncbi_datasets_version
     File datasets_ncbi_reference_fasta = ncbi_datasets_blast.ncbi_datasets_reference_fasta
