@@ -6,10 +6,11 @@ task ncbi_datasets_blast {
     File refnaap_assembly
     Int cpu = 4
     Int memory = 8
-    String docker = "us-docker.pkg.dev/general-theiagen/theiagen/ncbi-datasets-blast:16.38.1_V2"
+    String docker = "us-docker.pkg.dev/general-theiagen/theiagen/ncbi-datasets-blast:16.38.1_20250321"
     Int disk_size = 50
     String blast_evalue = "1e-10"
-    Float min_identity_threshold = 75.0
+    Float min_percent_identity = 75.0
+    Float min_gene_coverage = 75.0
   }
   meta {
     volatile: true
@@ -49,7 +50,10 @@ task ncbi_datasets_blast {
     echo -e "query_id\tsubject_id\tpercent_identity\talignment_length\tmismatches\tgap_opens\tquery_start\tquery_end\tsubject_start\tsubject_end\tevalue\tbit_score\tquery_coverage" > blast_results.tsv
     cat blast_results.txt >> blast_results.tsv
     
-    python3 /scripts/identify-genes.py ~{min_identity_threshold} blast_results.tsv rabv_cds_headers.txt
+    python3 /scripts/identify-genes.py --blast_file blast_results.tsv \
+            --header_file rabv_cds_headers.txt
+            --min_identity ~{min_percent_identity} \
+            --min_gene_coverage ~{min_gene_coverage}
 
     # If gene_coverage.txt doesn't exist (no hits above threshold), create it with zeros
     if [ ! -f gene_coverage.txt ]; then

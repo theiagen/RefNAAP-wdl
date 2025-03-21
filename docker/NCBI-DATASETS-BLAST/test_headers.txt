@@ -1,0 +1,5 @@
+>JQ685938.1:1514-2407 phosphoprotein [organism=Lyssavirus rabies] [isolate=A10-0514]
+>JQ685938.1:2496-3104 matrix protein [organism=Lyssavirus rabies] [isolate=A10-0514]
+>JQ685938.1:3316-4890 glycoprotein [organism=Lyssavirus rabies] [isolate=A10-0514]
+>JQ685938.1:5409-11792 polymerase [organism=Lyssavirus rabies] [isolate=A10-0514]
+>JQ685938.1:71-1423 nucleoprotein [organism=Lyssavirus rabies] [isolate=A10-0514]
