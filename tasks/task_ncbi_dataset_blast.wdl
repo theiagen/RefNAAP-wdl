@@ -51,7 +51,7 @@ task ncbi_datasets_blast {
     cat blast_results.txt >> blast_results.tsv
     
     python3 /scripts/identify-genes.py --blast_file blast_results.tsv \
-            --header_file rabv_cds_headers.txt
+            --header_file rabv_cds_headers.txt \
             --min_identity ~{min_percent_identity} \
             --min_gene_coverage ~{min_gene_coverage}
 
