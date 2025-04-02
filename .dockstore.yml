@@ -5,3 +5,8 @@ workflows:
    primaryDescriptorPath: /workflows/wf_refnaap.wdl
    testParameterFiles:
     - /test/inputs/empty.json
+ - name: RaBVGlue-wdl
+   subclass: WDL
+   primaryDescriptorPath: /workflows/wf_rabvglue.wdl
+   testParameterFiles:
+    - /test/inputs/empty.json
