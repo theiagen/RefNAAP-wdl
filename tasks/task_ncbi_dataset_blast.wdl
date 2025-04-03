@@ -6,7 +6,7 @@ task ncbi_datasets_blast {
     File refnaap_assembly
     Int cpu = 4
     Int memory = 8
-    String docker = "us-docker.pkg.dev/general-theiagen/theiagen/ncbi-datasets-blast:16.38.1_20250321"
+    String docker = "us-docker.pkg.dev/general-theiagen/theiagen/ncbi-datasets-blast:16.38.1_20250403"
     Int disk_size = 50
     String blast_evalue = "1e-10"
     Float min_percent_identity = 75.0

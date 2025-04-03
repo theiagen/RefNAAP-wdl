@@ -54,6 +54,19 @@ def gene_to_nomenclature(gene_name):
     # We don't know the nomenclature for unknown genes
     return mapping.get(gene_name, "unknown")
 
+def calculate_query_coverage(alignment_length, gaps, query_start, query_end):
+    """
+    Calculate gene coverage as (alignment_length_no_gaps / query_length) * 100
+    and cap at 100% in case of insertions.
+    """
+    
+    alignment_length_no_gaps = alignment_length - gaps
+    # +1 because query_start and query_end are 0-based
+    query_length = query_end - query_start + 1 
+    coverage = (alignment_length_no_gaps / query_length) * 100
+    # Cap at 100% in case of insertions
+    return min(coverage, 100.0)
+
 def main():
     # Set up argument parser
     parser = argparse.ArgumentParser(description='Detect Rabies virus from BLAST results and report gene coverage.')
@@ -87,8 +100,14 @@ def main():
         subject_id = result[1]
         # Percent identity is the 3rd column
         percent_identity = float(result[2])
-        # Query coverage is the 13th column
-        query_coverage = float(result[12])
+        # Gene coverage as reported by rabvglue | alignment / end - start
+        alignment_length = int(result[3])
+        gap_opens = int(result[5])
+        query_start = int(result[6])
+        query_end = int(result[7])
+        
+        # For our purposes query_coverage is exact coverage of the gene and not the enrtire alignment
+        query_coverage = calculate_query_coverage(alignment_length, gap_opens, query_start, query_end)
         
         if subject_id in subject_to_gene:
             gene_name = subject_to_gene[subject_id]
